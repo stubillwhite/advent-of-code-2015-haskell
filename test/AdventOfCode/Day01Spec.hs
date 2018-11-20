@@ -5,8 +5,6 @@ import Test.QuickCheck
 
 import AdventOfCode.Day01 (day01, finalFloor, stepsToBasement)
 
--- `main` is here so that this module can be run from GHCi on its own.  It is
--- not needed for automatic spec discovery.
 main :: IO ()
 main = hspec spec
 
