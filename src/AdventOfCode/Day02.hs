@@ -1,8 +1,10 @@
 module AdventOfCode.Day02
   ( day02
   , Parcel(..)
-  , paperRequiredToWrap
-  , totalSquareFeetToWrap
+  , paperRequiredForParcel
+  , totalPaperRequired
+  , ribbonRequiredForParcel
+  , totalRibbonRequired
   ) where 
 
 import System.IO
@@ -27,21 +29,33 @@ parser = many1 $ parcel <* newline
 parseCSV :: String -> Either ParseError [Parcel]
 parseCSV input = parse parser "(unknown)" input
 
-paperRequiredToWrap :: Parcel -> Int
-paperRequiredToWrap (Parcel l w h) =
+paperRequiredForParcel :: Parcel -> Int
+paperRequiredForParcel (Parcel l w h) =
   (2 * l * w) + (2 * w * h) + (2 * h * l) + slack
   where
     slack = minimum [l * w, l * h, w * h]
 
-totalSquareFeetToWrap :: [Parcel] -> Int
-totalSquareFeetToWrap parcels =
-  foldl (+) 0 (map paperRequiredToWrap parcels)
+totalPaperRequired :: [Parcel] -> Int
+totalPaperRequired parcels = foldl (+) 0 (map paperRequiredForParcel parcels)
+
+ribbonRequiredForParcel :: Parcel -> Int
+ribbonRequiredForParcel (Parcel l w h) =
+  distanceAround + bow
+  where
+    a : b : c : [] = sort [l, w, h]
+    distanceAround = a + a + b + b
+    bow = l * w * h
+
+totalRibbonRequired :: [Parcel] -> Int
+totalRibbonRequired parcels = foldl (+) 0 (map ribbonRequiredForParcel parcels)
 
 day02 :: IO ()
 day02 = do  
     handle <- openFile "input/day-02.txt" ReadMode  
     contents <- hGetContents handle
     putStrLn "Part one"
-    print $ (fmap totalSquareFeetToWrap (parseCSV contents))
+    print $ (fmap totalPaperRequired (parseCSV contents))
+    putStrLn "Part two"
+    print $ (fmap totalRibbonRequired (parseCSV contents))
     hClose handle  
 
