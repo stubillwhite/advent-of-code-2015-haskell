@@ -1,3 +1,3 @@
-# AdventOfCode2015
+# advent-of-code-2015-haskell
 
-add description of AdventOfCode2015 here
+Haskell solutions to Advent of Code 2015 (https://adventofcode.com/2015)
