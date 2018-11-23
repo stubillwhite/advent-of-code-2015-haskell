@@ -15,7 +15,8 @@ data Parcel = Parcel
   { l :: Int
   , w :: Int
   , h :: Int
-  } deriving (Show)
+  }
+  deriving (Show, Eq)
 
 parser :: Parser [Parcel]
 parser = many1 $ parcel <* newline
